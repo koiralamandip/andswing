@@ -43,12 +43,6 @@ System.java
 			//super.onCreate();
 			setContentView(SystemLayout.class);
 			setTitle("Main Activity");
-			if (getIntent() != null){
-				ASButton btn1 = (ASButton) getContentLayout().getContainerByID("btn1");
-				btn1.setText(getIntent().getStringExtra("textNew", "Not set"));
-				getIntent().putExtra("textOld", "This is previous Activity");
-				setResult(0, getIntent());
-			}
 		}
 	}
 
@@ -62,7 +56,7 @@ SystemLayout.java
 			this.setBackground(Color.gray);
 			ASButton btn1 = new ASButton(this, "New Activity");
 			btn1.setID("btn1");
-			btn1.addActionListener(e -> ((TestProjAnSMainActivity) getActivity()).openNew(btn1));
+			btn1.addActionListener(e -> ((System) getActivity()).openNew(btn1));
 			add(btn1,BorderLayout.NORTH);
 		}
 	}
@@ -102,7 +96,7 @@ ________________________________
 		}
 	}
 
-	public class B exnteds Activity{
+	public class B extends Activity{
 		
 		@override
 		protected void onCreate(){
