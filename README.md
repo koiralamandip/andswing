@@ -4,23 +4,24 @@ Swing based java extension to create swing system using Android's Activity &amp;
 
 In swing:
 System.java
-class System extends JFrame{
 
-	public System(){
-		setSize(640, 480);
-		// ......
-		createComponents();
-		setVisible(true);
-	}
+	public class System extends JFrame{
 
-	public void createComponents(){
-		getContentPane().add(new JPanel());
-	}
+		public System(){
+			setSize(640, 480);
+			// ......
+			createComponents();
+			setVisible(true);
+		}
 
-	public static void main(String[] args){
-		new System();
+		public void createComponents(){
+			getContentPane().add(new JPanel());
+		}
+
+		public static void main(String[] args){
+			new System();
+		}
 	}
-}
 
 Now using AndroSwing:
 1. Create a class System extending Activity class
@@ -33,44 +34,47 @@ Now using AndroSwing:
 
 System.java
 ----------------
-public class System extends Activity{
 
-	@Override
-	protected void onCreate() {
-		// TODO Auto-generated method stub
-		//super.onCreate();
-		setContentView(SystemLayout.class);
-		setTitle("Main Activity");
-		if (getIntent() != null){
-			ASButton btn1 = (ASButton) getContentLayout().getContainerByID("btn1");
-			btn1.setText(getIntent().getStringExtra("textNew", "Not set"));
-			getIntent().putExtra("textOld", "This is previous Activity");
-			setResult(0, getIntent());
+	public class System extends Activity{
+
+		@Override
+		protected void onCreate() {
+			// TODO Auto-generated method stub
+			//super.onCreate();
+			setContentView(SystemLayout.class);
+			setTitle("Main Activity");
+			if (getIntent() != null){
+				ASButton btn1 = (ASButton) getContentLayout().getContainerByID("btn1");
+				btn1.setText(getIntent().getStringExtra("textNew", "Not set"));
+				getIntent().putExtra("textOld", "This is previous Activity");
+				setResult(0, getIntent());
+			}
 		}
 	}
-}
 
 SystemLayout.java
 -------------
-public class SystemLayout extends ContentLayout{
-	@override
-	protected void setupUI(){
-		this.setLayout(new BorderLayout());
-		this.setBackground(Color.gray);
-		ASButton btn1 = new ASButton(this, "New Activity");
-		btn1.setID("btn1");
-		btn1.addActionListener(e -> ((TestProjAnSMainActivity) getActivity()).openNew(btn1));
-		add(btn1,BorderLayout.NORTH);
+
+	public class SystemLayout extends ContentLayout{
+		@override
+		protected void setupUI(){
+			this.setLayout(new BorderLayout());
+			this.setBackground(Color.gray);
+			ASButton btn1 = new ASButton(this, "New Activity");
+			btn1.setID("btn1");
+			btn1.addActionListener(e -> ((TestProjAnSMainActivity) getActivity()).openNew(btn1));
+			add(btn1,BorderLayout.NORTH);
+		}
 	}
-}
 
 Launcher.java
 ----------------
-public class Launcher{
-	pubic static void main(String[] args){
-		AndroSwingLauncher.launch(System.class);
+
+	public class Launcher{
+		pubic static void main(String[] args){
+			AndroSwingLauncher.launch(System.class);
+		}
 	}
-}
 
 
 
@@ -80,30 +84,31 @@ public class Launcher{
 To switch acitivies from A to B
 ________________________________
 
-public class A extends Activity{
+	public class A extends Activity{
 
-	// ..................
+		// ..................
 
-	public void switchToB(){
-		Intent i = new Intent(this, B.class);
-		startActivity(i);
-		// startActivityForResult(i, 10); where 10 is the request code sent to activity B
-	}
+		public void switchToB(){
+			Intent i = new Intent(this, B.class);
+			startActivity(i);
+			// startActivityForResult(i, 10); where 10 is the request code sent to activity B
+		}
 	
-	@override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data){
-		if (requestCode == 10 && resultCode == 4){
-			System.out.println(data.getStringExtra("sentMessage", "Default message if sentMessage is null"));
+		@override
+		protected void onActivityResult(int requestCode, int resultCode, Intent data){
+			if (requestCode == 10 && resultCode == 4){
+				System.out.println(data.getStringExtra("sentMessage", "Default message if sentMessage is null"));
+			}
 		}
 	}
-}
 
-public class B exnteds Activity{
-	@override
-	protected void onCreate(){
-		//.........
-		Intent i = getIntent();
-		i.putExtra("sentMessage", "This message is from B");
-		setResult(4, i);
+	public class B exnteds Activity{
+		
+		@override
+		protected void onCreate(){
+			//.........
+			Intent i = getIntent();
+			i.putExtra("sentMessage", "This message is from B");
+			setResult(4, i);
+		}
 	}
-}
